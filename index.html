@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cross-Dialect Text-To-Speech in Pitch-Accent Language Incorporating Multi-Dialect Phoneme-Level BERT</title>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="./stylesheet.css">
+</head>
+<header>
+  <h1 class="head-1">
+    <a><br>Cross-Dialect Text-To-Speech in Pitch-Accent Language<br>Incorporating Multi-Dialect Phoneme-Level BERT</a>
+  </h1>	
+  <h3 class="head-2">
+    Anonymous submission to IEEE SLT 2024
+  </h3>	
+</header>
+
+<body>
+  <h2 class="style-1">1. Samples of synthetic speech</h2>
+  <p>
+    We present speech samples synthesised using the following models:
+  </p>
+  <ul>
+    <li>●<b>FS2</b>: The original FastSpeech2[1]</li>
+    <li>●<b>FS2-AP (proposed)</b>: The proposed model using ALVs predicted by the ALV predictor</li>
+    <li>●<b>FS2-AP-Scratch</b>: FS2-AP without initialing the model parameter on the basis of the phoneme-level BERT[2] (PL-BERT) pre-training</li>
+    <li>●<b>FS2-AP-W/O</b>: FS2-AP incorporating PL-BERT pre-trained without data augmentation by LLM-based dialect translation</li>
+    <li>●<b>FS2-REF (proposed)</b>: The proposed model using ALVs extracted from reference speech</li>
+    <li>●<b>FS2-REF-F0</b>: FS2-REF using fundamental frequency (F0) as prosody feature instead of bottleneck (BN) feature</li>
+  </ul>
+  <p>
+    Speech samples synthesised by inputting texts sampled from transcriptions in CPJD-Osaka[3] into each model are shown in the table below.
+    The target speakers for intra-dialect TTS (ID-TTS) and cross-dialect TTS (CD-TTS) were defined as for the JMD[4] Osaka-dialect speaker and the JSUT[5] Japanese standard speaker, respectively.
+    Note that the target dialect for the ALV predictor is Osaka-dialect.
+    Reference speech sampled from the CPJD-Osaka are also shown (REF in the table).
+  </p>
+
+  <h4 class="style-1">ID-TTS: Synthesis of Osaka-dialect speech by Osaka-dialect speaker</h4>
+  <div class="table-container">
+    <table>
+      <tbody>
+        <tr>
+          <td style="text-align: center">FS2</td>
+          <td style="text-align: center"><audio src="wav/fs2_jmd/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jmd/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jmd/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jmd/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jmd/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jmd/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jmd/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jmd/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jmd/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jmd/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="text-align: center">FS2-AP</td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jmd/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jmd/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jmd/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jmd/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jmd/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jmd/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jmd/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jmd/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jmd/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jmd/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="text-align: center">FS2-AP-Scratch</td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jmd/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jmd/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jmd/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jmd/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jmd/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jmd/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jmd/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jmd/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jmd/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jmd/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="text-align: center">FS2-AP-W/O</td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jmd/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jmd/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jmd/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jmd/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jmd/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jmd/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jmd/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jmd/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jmd/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jmd/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="text-align: center">FS2-REF</td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jmd/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jmd/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jmd/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jmd/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jmd/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jmd/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jmd/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jmd/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jmd/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jmd/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="text-align: center">FS2-REF-F0</td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jmd/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jmd/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jmd/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jmd/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jmd/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jmd/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jmd/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jmd/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jmd/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jmd/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="text-align: center">REF</td>
+          <td style="text-align: center"><audio src="wav/cpjd/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="style-1">CD-TTS: Synthesis of Osaka-dialect speech by Tokyo-dialect speaker</h4>
+  <div class="table-container">
+    <table>
+      <tbody>
+        <tr>
+          <td style="text-align: center">FS2</td>
+          <td style="text-align: center"><audio src="wav/fs2_jsut/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jsut/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jsut/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jsut/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jsut/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jsut/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jsut/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jsut/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jsut/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2_jsut/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="text-align: center">FS2-AP</td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jsut/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jsut/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jsut/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jsut/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jsut/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jsut/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jsut/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jsut/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jsut/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap_jsut/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="text-align: center">FS2-AP-Scratch</td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jsut/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jsut/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jsut/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jsut/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jsut/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jsut/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jsut/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jsut/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jsut/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-scratch_jsut/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="text-align: center">FS2-AP-W/O</td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jsut/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jsut/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jsut/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jsut/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jsut/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jsut/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jsut/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jsut/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jsut/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ap-wo_jsut/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="text-align: center">FS2-REF</td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jsut/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jsut/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jsut/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jsut/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jsut/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jsut/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jsut/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jsut/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jsut/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref_jsut/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="text-align: center">FS2-REF-F0</td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jsut/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jsut/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jsut/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jsut/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jsut/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jsut/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jsut/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jsut/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jsut/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/fs2-ref-f0_jsut/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="text-align: center">REF</td>
+          <td style="text-align: center"><audio src="wav/cpjd/001.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/002.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/003.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/004.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/005.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/006.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/007.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/008.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/009.wav" controls></audio></td>
+          <td style="text-align: center"><audio src="wav/cpjd/010.wav" controls></audio></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <h2 class="style-1">2. Samples of LLM-based dialect translation</h2>
+  <p>
+    We present text samples translated into Osaka-dialect using <a href="https://huggingface.co/tokyotech-llm/Swallow-13b-instruct-hf">Swallow 13B</a>.
+    Original sentences written in standard Japanese are sampled from <a href="https://huggingface.co/datasets/reazon-research/reazonspeech">ReazonSpeech corpus</a>.
+  </p>
+
+  <div class="table-container">
+    <table>
+      <tbody>
+        <tr>
+          <td style="text-align:center">Original sentence written in standard Japanese</td>
+          <td style="text-align:center">Sentence translated into Osaka-dialect</td>
+        </tr>
+        <tr>
+          <td>本当だって思えばいいって事ですよね?</td>
+          <td>ほんまやと思えばええんちゃうか?</td>
+        </tr>
+        <tr>
+          <td>北日本では大雪となるおそれもありますので、今のうちに備えをしておいてください。</td>
+          <td>北日本では大雪になるかもしれへんから、今のうちに備えといた方がええで。</td>
+        </tr>
+        <tr>
+          <td>人間にしかできないことはなんなのか考えてみるといいね。</td>
+          <td>人間にしかできひんことはなんなのか考えてみたらええね。</td>
+        </tr>
+        <tr>
+          <td>それでもうひたすらそれを着々とやってるっていう、そういう前提で考えるべきだと思います。</td>
+          <td>それでもうひたすらそれを着々とやってるっていう、そういう前提で考えるべきやと思う。</td>
+        </tr>
+        <tr>
+          <td>多くの相撲ファンは同じ気持ちかもしれないですね。</td>
+          <td>多くの相撲ファンは同じ気持ちかもしれへんね。</td>
+        </tr>
+        <tr>
+          <td>出火当時女性は家にいたとみられますが現在連絡がとれていないということです。</td>
+          <td>出火当時女性は家におったみたいやけど、現在連絡がとれへんみたいやで。</td>
+        </tr>
+        <tr>
+          <td>今日は風船で遊びます！</td>
+          <td>今日は風船で遊ぶで！</td>
+        </tr>
+        <tr>
+          <td>あの時僕はもうお金もないですし、一張羅の時計ですよ。</td>
+          <td>あの時僕はもうお金もないし、一張羅の時計やねん。</td>
+        </tr>
+        <tr>
+          <td>とことん遊ぶって大事ですね。</td>
+          <td>とことん遊ぶって大事やな。</td>
+        </tr>
+        <tr>
+          <td>あっそう、便秘の女性にもすごくいいと思います。</td>
+          <td>あっそうや、便秘の女性にもめっちゃええと思うで。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  <h2 class="style-1">References</h2>
+  <ul class="custom-list">
+    <li>Y. Ren, C. Hu, X. Tan, T. Qin, S. Zhao, Z. Zhao, and T.-Y. Liu, "FastSpeech 2: Fast and high-quality end-to-end text to speech," in Proc. ICLR, 2021.</li>
+    <li>Y. A. Li, C. Han, X. Jiang, and N. Mesgarani, "Phoneme-level BERT for enhanced prosody of text-to-speech with grapheme predictions," in Proc. ICASSP, 2023, pp. 1-5.</li>
+    <li>S. Takamichi and H. Saruwatari, "CPJD corpus: Crowdsourced parallel speech corpus of japanese dialects," in Proc. LREC, 2018, pp. 434-437.</li>
+    <li>S. Takamichi and H. Saruwatari, "JMD: Japanese multi-dialect corpus," (2021). [Online]. Available: https://sites.google.com/site/shinnosuketakamichi/research-topics/jmd_corpus?authuser=0</li>
+    <li>S. Takamichi, R. Sonobe, K. Mitsui, Y. Saito, T. Koriyama, N. Tanji, and H. Saruwatari, "JSUT and JVS: Free Japanese voice corpora for accelerating speech synthesis research," Acoustical Science and Technology, vol. 41, no. 5, pp. 761-768, Sep. 2020.</li>
+  </ul>
+
+  <footer></footer>
+</body>
+  
